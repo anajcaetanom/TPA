@@ -1,4 +1,4 @@
-# # Técnicas de Programação Avançada
+# Técnicas de Programação Avançada
 
 Este repositório contém a implementações desenvolvidas como parte da disciplina **Técnicas de Programação Avançada**.
 
