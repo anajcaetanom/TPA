@@ -2,9 +2,8 @@
 
 Este repositório contém implementações desenvolvidas como parte da disciplina **Técnicas de Programação Avançada**.
 
-## Estrutura do Projeto
-
-- **TAD Arranjo**: Contém estrutura de dados que armazena elementos inteiros e oferece diversas operações de manipulação.
+## TAD Arranjo 
+Contém uma estrutura de dados que armazena elementos inteiros e oferece diversas operações de manipulação.
 
 ### Métodos:
 - `inserir(Integer item)`: Insere um item no arranjo. Se o item já existir ou a lista estiver cheia, lança uma exceção.
