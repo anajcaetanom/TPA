@@ -1,6 +1,6 @@
 # Técnicas de Programação Avançada
 
-Este repositório contém a implementações desenvolvidas como parte da disciplina **Técnicas de Programação Avançada**.
+Este repositório contém implementações desenvolvidas como parte da disciplina **Técnicas de Programação Avançada**.
 
 ## Estrutura do Projeto
 
