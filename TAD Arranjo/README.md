@@ -1,0 +1,2 @@
+## Classe do TAD Arranjo e classe de teste para uso do TAD
+Envie aqui em um arquivo .java (use o mesmo arquivo para as duas classes) contendo a classe com o TAD Arranjo e a classe de teste (cliente da classe TADArranjo) que realiza as operações insere, somaparesSimétricos e remove, conforme descrito nos slides.
