@@ -10,6 +10,7 @@ import java.awt.event.AdjustmentListener;
 
 public class ClienteGUI2 extends JFrame {
     private JTable table;
+    JTextField textField;
     private DefaultTableModel tableModel;
     private BufferDeClientes bufferDeClientes;
     private final int TAMANHO_BUFFER = 10000;
@@ -26,7 +27,6 @@ public class ClienteGUI2 extends JFrame {
         criarInterface();
     }
 
-
     private void carregarArquivo() {
         JFileChooser fileChooser = new JFileChooser();
         int retorno = fileChooser.showOpenDialog(this);
@@ -34,12 +34,12 @@ public class ClienteGUI2 extends JFrame {
             arquivoSelecionado = fileChooser.getSelectedFile().getAbsolutePath();
             bufferDeClientes.associaBuffer(new ArquivoCliente()); // Substitua por sua implementação
             bufferDeClientes.inicializaBuffer("leitura", arquivoSelecionado); // Passa o nome do arquivo aqui
-            registrosCarregados = 0; // Reseta o contador
             tableModel.setRowCount(0); // Limpa a tabela
             carregarMaisClientes(); // Carrega os primeiros clientes
             arquivoCarregado = true; // Marca que o arquivo foi carregado
         }
     }
+
     private void criarInterface() {
         JPanel panel = new JPanel(new BorderLayout());
         JButton btnCarregar = new JButton("Carregar Clientes");
@@ -47,17 +47,24 @@ public class ClienteGUI2 extends JFrame {
         table = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(table);
 
+        textField = new JTextField();
+        JButton btnText = new JButton("Procurar cliente");
+        JPanel textPanel = new JPanel(new BorderLayout());
+        textPanel.add(textField, BorderLayout.CENTER);
+        textPanel.add(btnText, BorderLayout.EAST);
+
         // Adiciona um listener ao JScrollPane para carregar mais clientes ao rolar
         scrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {
             @Override
             public void adjustmentValueChanged(AdjustmentEvent e) {
                 if (!scrollPane.getVerticalScrollBar().getValueIsAdjusting()) {
                     // Verifica se estamos no final da tabela e se o arquivo foi carregado
-                    if (arquivoCarregado && 
-                        scrollPane.getVerticalScrollBar().getValue() + 
-                        scrollPane.getVerticalScrollBar().getVisibleAmount() >= 
+                    if (arquivoCarregado &&
+                        tableModel.getRowCount() >= TAMANHO_BUFFER &&
+                        scrollPane.getVerticalScrollBar().getValue() +
+                        scrollPane.getVerticalScrollBar().getVisibleAmount() >=
                         scrollPane.getVerticalScrollBar().getMaximum()) {
-                        carregarMaisClientes();
+                            carregarMaisClientes();
                     }
                 }
             }
@@ -70,8 +77,16 @@ public class ClienteGUI2 extends JFrame {
             }
         });
 
+        btnText.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                pesquisarCliente();
+            }
+        });
+
         panel.add(btnCarregar, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(textPanel, BorderLayout.SOUTH);
+
         add(panel);
     }
 
@@ -88,10 +103,40 @@ public class ClienteGUI2 extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ClienteGUI2 gui = new ClienteGUI2();
-            gui.setVisible(true);
-        });
+    public void pesquisarCliente() {
+        if (arquivoSelecionado != null) {
+
+            bufferDeClientes.inicializaBuffer("leitura", arquivoSelecionado);
+            tableModel.setRowCount(0);
+            String pesquisa = textField.getText().trim().toLowerCase();
+            if (pesquisa.isEmpty()) {
+                carregarMaisClientes();
+                return;
+            }
+
+            Cliente[] clientes = bufferDeClientes.proximosClientes(TAMANHO_BUFFER);
+            while (clientes != null && clientes.length > 0) {
+                for (Cliente cliente : clientes) {
+                    String nome = cliente.getNome().toLowerCase();
+                    if (pesquisa.equals(nome)) {
+                        tableModel.addRow(new Object[]{
+                                tableModel.getRowCount() + 1,
+                                cliente.getNome(),
+                                cliente.getSobrenome(),
+                                cliente.getTelefone(),
+                                cliente.getEndereco(),
+                                cliente.getCreditScore()
+                        });
+                        return;
+                    }
+                }
+                clientes = bufferDeClientes.proximosClientes(TAMANHO_BUFFER);
+            }
+            JOptionPane.showMessageDialog(this,"Not found.");
+        }
+
+        JOptionPane.showMessageDialog(this,"No file selected.");
     }
+
+
 }

@@ -121,8 +121,8 @@ public class BufferDeClientes implements Buffer<Cliente> {
 	public String getModo() {
 		// TODO Auto-generated method stub
 		return modo;
-		
 	}
+
 	public Cliente[] proximosClientes(int quantidade) {
 	    Cliente[] clientes = new Cliente[quantidade];
 	    int i = 0;

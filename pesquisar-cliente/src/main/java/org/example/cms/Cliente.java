@@ -63,6 +63,7 @@ public class Cliente implements Serializable {
         if (creditScore < 0 || creditScore > 100) {
             throw new IllegalArgumentException("Credit score deve ser entre 0 e 100.");
         }
+
         this.creditScore = creditScore;
     }
 

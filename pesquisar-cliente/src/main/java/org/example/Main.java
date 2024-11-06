@@ -1,20 +1,50 @@
 package org.example;
 
+import org.example.cms.ClienteGUI2;
 import org.example.cms.GeradorDeArquivosDeClientes;
 
+import javax.swing.*;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
-        String nomeArquivo = "clientes";
+        Scanner scanner = new Scanner(System.in);
 
-        int quantidadeClientes = 2000000;
+        String menu = """
+                1. Gerar novo arquivo de clientes.
+                2. Pesquisar cliente.
+                
+                Insira uma opção:
+                """;
+        System.out.println(menu);
+        int option = scanner.nextInt();
 
-        // Instanciando o gerador
-        GeradorDeArquivosDeClientes gerador = new GeradorDeArquivosDeClientes();
+        switch (option) {
+            case 1:
+                System.out.print("Digite o nome do arquivo: ");
+                String nomeArquivo = scanner.next();
 
-        // Gerar um grande dataset de clientes
-        gerador.geraGrandeDataSetDeClientes(nomeArquivo, quantidadeClientes);
+                System.out.println("Digite a quantidade de clientes para gerar: ");
+                int qtdClientes = scanner.nextInt();
+
+                // Instanciando o gerador
+                GeradorDeArquivosDeClientes gerador = new GeradorDeArquivosDeClientes();
+
+                // Gerar um grande dataset de clientes
+                gerador.geraGrandeDataSetDeClientes(nomeArquivo, qtdClientes);
+
+                break;
+
+            case 2:
+                SwingUtilities.invokeLater(() -> {
+                    ClienteGUI2 gui = new ClienteGUI2();
+                    gui.setVisible(true);
+                });
+        }
+
+
+
+
     }
 }
